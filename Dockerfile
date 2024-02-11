@@ -9,7 +9,7 @@ RUN npm run build
 # Build Stage (Backend)
 FROM rust:latest AS builder_backend
 WORKDIR /agave
-COPY Cargo.lock Cargo.toml ./
+COPY Cargo.toml ./
 COPY src ./src/
 RUN cargo build --release
 
@@ -20,6 +20,6 @@ COPY --from=builder_frontend /react-app/ ./react-app
 COPY --from=builder_backend /agave/target/ ./target/
 COPY --from=builder_backend /agave/src/ ./src/
 
-EXPOSE 3000
+EXPOSE 8080
 
-CMD ["target/release/actix_demo.exe"]
+CMD ["target/release/agave.exe"]
