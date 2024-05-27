@@ -1,6 +1,9 @@
+use crate::*;
+
 use deadpool_postgres::{Config, Pool};
 use tokio_postgres::NoTls;
 use tokio_postgres_migration::Migration;
+use dotenv::dotenv;
 
 const SCRIPTS_UP: [(&str, &str); 1] = [(
     "0001_create-users",
@@ -8,6 +11,7 @@ const SCRIPTS_UP: [(&str, &str); 1] = [(
 )];
 
 fn create_config() -> Config {
+    dotenv().ok();
     let mut cfg = Config::new();
     if let Ok(host) = std::env::var("PG_HOST") {
         cfg.host = Some(host);

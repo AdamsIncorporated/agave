@@ -4,11 +4,11 @@ FROM node:lts AS development
 ENV CI=true
 ENV PORT=3000
 
-WORKDIR /code
-COPY package.json /code/package.json
-COPY package-lock.json /code/package-lock.json
+WORKDIR /app
+COPY package.json /app/package.json
+COPY package-lock.json /app/package-lock.json
 RUN npm ci
-COPY . /code
+COPY . /app
 
 CMD [ "npm", "start" ]
 
@@ -19,9 +19,9 @@ apt-get install -y --no-install-recommends git
 EOF
 
 RUN <<EOF
-useradd -s /bin/bash -m vscode
+useradd -s /bin/bash -m vsapp
 groupadd docker
-usermod -aG docker vscode
+usermod -aG docker vsapp
 EOF
 # install Docker tools (cli, buildx, compose)
 COPY --from=gloursdocker/docker / /
@@ -29,8 +29,8 @@ CMD [ "npm", "start" ]
 
 FROM development AS builder
 
-RUN npm run build
+RUN npm run start
 
 FROM nginx:1.13-alpine
 
-COPY --from=builder /code/build /usr/share/nginx/html
+COPY --from=builder /app/build /usr/share/nginx/html

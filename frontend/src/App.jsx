@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
-import StockTicker from "./component/StockTicker.js"
-import logo from "./logo.svg";
-import "./App.css";
+import React, { useState, useEffect } from 'react';
+import DataFetcher from './component/DataFetcher.jsx';
+import logo from './logo.svg';
+import './App.css';
 
 function App() {
   const [message, setMessage] = useState();
-  useEffect(() => {
-    fetch("/api/users")
-      .then((res) => res.json())
-      .then((res) => setMessage(`Hello with ${res.length} users`))
-      .catch(console.error);
-  }, [setMessage]);
+  const [url, setUrl] = useState(null);
+  const handleFetchData = () => {
+    setUrl('/api/yahoo-send-to-consent/');
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>{message || "Loading..."}</p>
+        <p>{message || 'Loading...'}</p>
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
@@ -27,11 +26,11 @@ function App() {
         >
           Learn React
         </a>
+        <div>
+          <button onClick={handleFetchData}>Fetch Data</button>
+          {url && <DataFetcher url={url} />}
+        </div>
       </header>
-      <div>
-        <StockTicker />
-      </div>
-      <div>Hello World!</div>
     </div>
   );
 }

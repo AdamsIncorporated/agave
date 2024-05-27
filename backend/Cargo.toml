@@ -1,18 +1,20 @@
 [package]
 name = "react-rust-postgres"
 version = "0.1.0"
-authors = ["Jérémie Drouet <jeremie.drouet@gmail.com>"]
+authors = ["Samuel Adams <samuel.grant.adams@gmail.com>"]
 edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 actix-web = "4.0.0-beta.8"
 deadpool-postgres = "0.9.0"
+dotenv = "0.15.0"
 env_logger = "^0.8"
+futures = "0.3.30"
 log = "^0.4"
+qstring = "0.7.2"
+reqwest = {version="0.12.4", features= ["json"]}
 serde = "1.0"
 serde_json = "1.0"
+tokio = { version = "1.21.2", features = ["full"] }
 tokio-postgres = "^0.7"
 tokio-postgres-migration = "^0.1"
-yahoo-finance = "0.3.0"
