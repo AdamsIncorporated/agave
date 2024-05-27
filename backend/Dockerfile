@@ -4,12 +4,22 @@ FROM rust:buster AS base
 ENV USER=root
 ENV ROCKET_ADDRESS=0.0.0.0
 ENV ROCKET_ENV=development
+ENV APP_ID=${APP_ID}
+ENV CLIENT_ID=${CLIENT_ID}
+ENV CLIENT_SECRET=${CLIENT_SECRET}
+ENV REDIRECT_URL=${REDIRECT_URL}
+ENV ADDRESS=${ADDRESS}
+ENV RUST_LOG=${RUST_LOG}
+ENV PG_DBNAME=${PG_DBNAME}
+ENV PG_HOST=${PG_HOST}
+ENV PG_USER=${PG_USER}
+ENV PG_PASSWORD=${PG_PASSWORD}
 
-WORKDIR /code
+WORKDIR /app
 RUN cargo init
-COPY Cargo.toml /code/Cargo.toml
+COPY Cargo.toml /app/Cargo.toml
 RUN cargo fetch
-COPY . /code
+COPY . /app
 
 FROM base AS development
 
@@ -26,9 +36,9 @@ apt-get install -y --no-install-recommends git
 EOF
 
 RUN <<EOF
-useradd -s /bin/bash -m vscode
+useradd -s /bin/bash -m vsapp
 groupadd docker
-usermod -aG docker vscode
+usermod -aG docker vsapp
 EOF
 # install Docker tools (cli, buildx, compose)
 COPY --from=gloursdocker/docker / /
@@ -42,8 +52,9 @@ FROM debian:buster-slim
 
 ENV ROCKET_ENV=production
 
+
 EXPOSE 8000
 
-COPY --from=builder /code/target/release/react-rust-postgres /react-rust-postgres
+COPY --from=builder /app/target/release/react-rust-postgres /react-rust-postgres
 
 CMD [ "/react-rust-postgres" ]

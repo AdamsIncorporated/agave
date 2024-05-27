@@ -6,7 +6,6 @@ mod user;
 
 use actix_web::{get, web, App, HttpRequest, HttpResponse, HttpServer};
 use deadpool_postgres::Pool;
-use dotenv::dotenv;
 use qstring::QString;
 use services::yahoo_finance::AuthConfig;
 use std::result::Result::*;
@@ -65,7 +64,6 @@ fn address() -> String {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     env_logger::init();
-    dotenv().ok();
 
     let pg_pool = postgres::create_pool();
     postgres::migrate_up(&pg_pool).await;

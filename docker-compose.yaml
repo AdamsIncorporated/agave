@@ -1,36 +1,43 @@
+version: '3.1'
 name: agave
 services:
   frontend:
     build:
       context: frontend
       target: development
+    env_file:
+       - .env
     networks:
       - client-side
     ports:
       - 3000:3000
     volumes:
-      - ./frontend/src:/code/src:ro
+      - ./frontend/src:/app/src
 
   backend:
     build:
       context: backend
       target: development
-    environment:
-      - .env
+    env_file:
+       - .env
     networks:
       - client-side
       - server-side
+    ports:
+      - 8000:8000
     volumes:
-      - ./backend/src:/code/src
-      - backend-cache:/code/target
+      - ./backend/src:/app/src
+      - backend-cache:/app/target
     depends_on:
       - db
 
   db:
     image: postgres:12-alpine
     restart: always
+    env_file:
+       - .env
     environment:
-      - POSTGRES_PASSWORD=Scout_1066
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
     networks:
       - server-side
     ports:
