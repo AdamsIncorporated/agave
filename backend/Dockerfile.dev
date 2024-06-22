@@ -1,0 +1,13 @@
+FROM rust:buster
+
+WORKDIR /app
+RUN cargo init
+COPY Cargo.toml /app/Cargo.toml
+COPY Cargo.lock /app/Cargo.lock
+RUN cargo build \
+    && cargo install cargo-watch
+COPY . /app
+
+EXPOSE 8000
+
+CMD [ "cargo", "watch", "-x", "run" ]
