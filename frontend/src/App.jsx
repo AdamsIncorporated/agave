@@ -1,33 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import DataFetcher from './component/DataFetcher.jsx';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import DataFetcher from "./component/DataFetcher.jsx";
+import "./App.css";
 
 function App() {
   const [message, setMessage] = useState();
   const [url, setUrl] = useState(null);
   const handleFetchData = () => {
-    setUrl('/api/yahoo-send-to-consent/');
+    setUrl("/api/");
   };
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{message || 'Loading...'}</p>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
         <div>
-          <button onClick={handleFetchData}>Fetch Data</button>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleFetchData}>
+            Fetch Data
+          </button>
           {url && <DataFetcher url={url} />}
         </div>
       </header>
