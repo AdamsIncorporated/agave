@@ -1,3 +1,5 @@
+use env_logger::Env;
+use log::info;
 use actix_web::{get, App, HttpResponse, HttpServer, Responder};
 use serde::Serialize;
 use std::time::{Duration, UNIX_EPOCH};
@@ -28,15 +30,19 @@ async fn get_quote() -> Quote {
 async fn index() -> impl Responder {
     let quote = get_quote().await;
     let json = serde_json::to_string(&quote).unwrap_or_default();
+    info!("Response JSON: {}", json);
 
     HttpResponse::Ok().body(json)
 }
 
-
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().service(index))
-        .bind(("127.0.0.1", 8000))?
-        .run()
-        .await
+    env_logger::init_from_env(Env::default().default_filter_or("info"));
+    HttpServer::new(|| {
+        App::new()
+            .service(index)
+    })
+    .bind("127.0.0.1:8080")?
+    .run()
+    .await
 }

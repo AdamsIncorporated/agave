@@ -1,22 +1,16 @@
-import React, { useState, useEffect } from "react";
-import DataFetcher from "./component/DataFetcher.jsx";
+import React from "react";
+import { useFetchData } from './component/api';
 import "./App.css";
 
-function App() {
-  const [message, setMessage] = useState();
-  const [url, setUrl] = useState(null);
-  const handleFetchData = () => {
-    setUrl("/api/");
-  };
+const App = () => {
+  const { data, fetchData } = useFetchData();
 
   return (
     <div className="App">
       <header className="App-header">
         <div>
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleFetchData}>
-            Fetch Data
-          </button>
-          {url && <DataFetcher url={url} />}
+          <button onClick={fetchData}>Fetch Data</button>
+          {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
         </div>
       </header>
     </div>
