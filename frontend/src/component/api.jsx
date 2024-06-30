@@ -1,4 +1,3 @@
-// src/api.js
 import { useState } from 'react';
 
 export const useFetchData = () => {
@@ -6,8 +5,8 @@ export const useFetchData = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("/api");
-      const result = await response.json();
+      const response = await fetch("/");
+      const result = await response;
       setData(result);
     } catch (error) {
       console.error("Error fetching data:", error);

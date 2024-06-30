@@ -1,4 +1,4 @@
-use actix_web::{get, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, http::header::ContentType, App, HttpResponse, HttpServer, Responder};
 use env_logger::Env;
 use log::info;
 use serde::Serialize;
@@ -6,6 +6,7 @@ use std::time::{Duration, UNIX_EPOCH};
 use time::OffsetDateTime;
 use yahoo_finance_api as yahoo;
 use yahoo_finance_api::YahooError;
+mod cors;
 
 #[derive(Serialize)]
 struct YahooApiData {
@@ -35,8 +36,10 @@ async fn index() -> impl Responder {
                 err.to_string()
             });
             info!("Response JSON: {}", json);
-            HttpResponse::Ok().body(json)
-        },
+            HttpResponse::Ok()
+                .content_type(ContentType::json())
+                .json(json)
+        }
         Err(err) => {
             info!("{}", err.to_string());
             HttpResponse::InternalServerError().body(format!("Failed to get quote: {}", err))
@@ -47,8 +50,14 @@ async fn index() -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     env_logger::init_from_env(Env::default().default_filter_or("info"));
-    HttpServer::new(|| App::new().service(index))
-        .bind("127.0.0.1:8000")?
-        .run()
-        .await
+    HttpServer::new(|| {
+        let cors = cors::create_cors();
+        
+        App::new()
+            .wrap(cors)
+            .service(index)
+    })
+    .bind("127.0.0.1:8000")?
+    .run()
+    .await
 }
