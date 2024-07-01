@@ -5,7 +5,11 @@ export default defineConfig(() => {
   return {
     plugins: [react()],
     server: {
-      host: true,
+      host: "0.0.0.0",
+      watch: {
+        usePolling: true,
+      },
+      hmr: { host: "0.0.0.0" },
       strictPort: true,
       port: 3000,
       cors: true,
@@ -13,7 +17,6 @@ export default defineConfig(() => {
         '/api': {
           target: 'http://localhost:8000',
           changeOrigin: true,
-          secure: false,
           rewrite: (path) => path.replace(/^\/api/, ''),
           configure: (proxy, _options) => {
             proxy.on('error', (err, _req, _res) => {

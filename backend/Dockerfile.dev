@@ -4,9 +4,9 @@ WORKDIR /api
 RUN apk add --no-cache musl-dev \ 
     && cargo install cargo-watch
 COPY ./ ./
+ENV PATH=/usr/local/cargo/bin:$PATH
 RUN cargo build
 
 EXPOSE 8000
 
-# CMD ["sh", "-c", "cargo watch -q -c x run"]
-CMD ["echo", "hello world!"]
+CMD ["cargo", "watch", "-q", "-c", "-x", "run"]

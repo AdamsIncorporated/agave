@@ -62,7 +62,6 @@ async fn main() -> std::io::Result<()> {
     env_logger::init_from_env(Env::default().default_filter_or("info"));
     HttpServer::new(|| {
         let cors = cors::create_cors();
-        
         App::new()
             .wrap(cors)
             .service(index)
