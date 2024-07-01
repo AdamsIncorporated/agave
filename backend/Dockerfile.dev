@@ -2,11 +2,11 @@ FROM rust:1.79-alpine
 
 WORKDIR /api
 RUN apk add --no-cache musl-dev \ 
-    && rustup update \ 
     && cargo install cargo-watch
 COPY ./ ./
 RUN cargo build
 
 EXPOSE 8000
 
-CMD ["cargo", "watch", "-q", "-c", "x", "run"]
+# CMD ["sh", "-c", "cargo watch -q -c x run"]
+CMD ["echo", "hello world!"]
