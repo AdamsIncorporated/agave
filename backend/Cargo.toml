@@ -2,7 +2,7 @@
 name = "agave"
 version = "0.1.0"
 authors = ["Samuel Adams <samuel.grant.adams@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 actix = "0.13.5"
@@ -15,5 +15,3 @@ serde_json = "1.0.118"
 time = "0.3.36"
 tokio-test = "0.4.4"
 yahoo_finance_api = "2.2.0"
-
-

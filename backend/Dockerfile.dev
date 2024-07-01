@@ -1,13 +1,12 @@
-FROM rust:buster
+FROM rust:1.79-alpine
 
-WORKDIR /app
-RUN cargo init
-COPY Cargo.toml /app/Cargo.toml
-COPY Cargo.lock /app/Cargo.lock
-RUN cargo build \
+WORKDIR /api
+RUN apk add --no-cache musl-dev \ 
+    && rustup update \ 
     && cargo install cargo-watch
-COPY . /app
+COPY ./ ./
+RUN cargo build
 
 EXPOSE 8000
 
-CMD [ "cargo", "watch", "-x", "run" ]
+CMD ["cargo", "watch", "-q", "-c", "x", "run"]

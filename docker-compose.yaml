@@ -26,8 +26,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./backend/src:/app/src
-      - backend-cache:/app/target
+      - ./backend/src:/api/src
     depends_on:
       - db
  
