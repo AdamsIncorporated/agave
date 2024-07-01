@@ -12,18 +12,28 @@ mod cors;
 struct YahooApiData {
     time: String,
     close: f64,
+    open: f64,
+    high: f64,
+    low: f64,
+    volume: u64,
+    adjclose: f64,
 }
 
 async fn get_quote() -> Result<YahooApiData, YahooError> {
     let provider = yahoo::YahooConnector::new()?;
     let response = provider.get_latest_quotes("AAPL", "1d").await?;
-    let quote = response.last_quote().unwrap(); // Note: Handle potential errors here
+    let quote = response.last_quote().unwrap();
     let time: String =
         OffsetDateTime::from(UNIX_EPOCH + Duration::from_secs(quote.timestamp)).to_string();
 
     Ok(YahooApiData {
         time: time,
         close: quote.close,
+        open: quote.open,
+        high: quote.high,
+        low: quote.low,
+        volume: quote.volume,
+        adjclose: quote.adjclose,
     })
 }
 
